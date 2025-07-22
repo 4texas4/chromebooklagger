@@ -2,74 +2,110 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Lag Test</title>
+  <title>Open Lag Tabs in about:blank</title>
   <style>
     body {
-      margin: 0;
-      height: 100vh;
+      background: #111;
+      color: white;
+      font-family: sans-serif;
+      padding: 2em;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
-      font-family: Arial, sans-serif;
-      background: #121212;
-      color: #eee;
-    }
-    main {
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      gap: 20px;
-      font-size: 1.5rem;
       text-align: center;
-      padding: 0 20px;
+    }
+    input, button {
+      font-size: 1.2em;
+      padding: 0.5em 1em;
+      margin: 0.5em;
+      border-radius: 8px;
+      border: none;
+    }
+    input {
+      width: 120px;
     }
     button {
-      padding: 15px 30px;
-      font-size: 1.2rem;
-      cursor: pointer;
-      border: none;
-      border-radius: 6px;
-      background-color: #007bff;
+      background: #0f62fe;
       color: white;
-      transition: background-color 0.3s ease;
+      cursor: pointer;
     }
     button:hover {
-      background-color: #0056b3;
+      background: #0353e9;
     }
-    footer {
-      text-align: center;
-      padding: 10px 0;
-      font-size: 0.9rem;
+    .message {
+      margin-top: 1em;
+      font-size: 1.1em;
+      color: #f5c400;
+    }
+    img {
+      margin-top: 1em;
+      max-width: 90%;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.2);
+    }
+    .credits {
+      margin-top: 2em;
+      font-size: 0.9em;
       color: #888;
-      background-color: #111;
-      width: 100%;
-      position: fixed;
-      bottom: 0;
-      left: 0;
     }
-    footer a {
+    .credits a {
       color: #888;
       text-decoration: none;
     }
-    footer a:hover {
+    .credits a:hover {
       text-decoration: underline;
-      color: #ccc;
     }
   </style>
 </head>
 <body>
-  <main>
-    <div>See How Much Your Computer Can Handle.</div>
-    <button onclick="window.location.href='https://4texas4.github.io/chromebooklagger/lag.html'">
-      Open Lag Tester
-    </button>
-  </main>
-  <footer>
-    Credits to <a href="https://cznull.github.io/vsbm" target="_blank" rel="noopener noreferrer">https://cznull.github.io/vsbm</a>
-  </footer>
+  <input type="number" id="count" min="1" placeholder="How many tabs?" />
+  <button onclick="openLagTabs()">Open Lag Tabs</button>
+  <div class="message">If it is opening only one tab, Allow Popups in the top right!</div>
+  <img src="https://files.catbox.moe/ar007s.png" alt="Popup Help Image">
+  <div class="credits">
+    Credits to <a href="https://cznull.github.io/vsbm" target="_blank">https://cznull.github.io/vsbm</a>
+  </div>
+
+<script>
+  const lagIframeHTML = `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <title>Lag Iframe Tab</title>
+      <style>
+        html, body {
+          margin: 0; padding: 0; height: 100%; overflow: hidden; background: #000;
+        }
+        iframe {
+          border: none;
+          width: 100vw;
+          height: 100vh;
+          display: block;
+        }
+      </style>
+    </head>
+    <body>
+      <iframe src="https://4texas4.github.io/chromebooklagger/lag.html" allowfullscreen></iframe>
+    </body>
+    </html>
+  `;
+
+  function openLagTabs() {
+    const count = parseInt(document.getElementById('count').value);
+    if (isNaN(count) || count < 1) return;
+
+    for (let i = 0; i < count; i++) {
+      const newTab = window.open('about:blank', '_blank');
+      if (newTab) {
+        newTab.document.open();
+        newTab.document.write(lagIframeHTML);
+        newTab.document.close();
+      } else {
+        break;
+      }
+    }
+  }
+</script>
 </body>
 </html>
