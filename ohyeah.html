@@ -1,41 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<title>Open Lag Tabs in about:blank</title>
-<style>
-  body {
-    background: #111;
-    color: white;
-    font-family: sans-serif;
-    padding: 2em;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  input, button {
-    font-size: 1.2em;
-    padding: 0.5em 1em;
-    margin: 0.5em;
-    border-radius: 8px;
-    border: none;
-  }
-  input {
-    width: 120px;
-  }
-  button {
-    background: #0f62fe;
-    color: white;
-    cursor: pointer;
-  }
-  button:hover {
-    background: #0353e9;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <title>Open Lag Tabs in about:blank</title>
+  <style>
+    body {
+      background: #111;
+      color: white;
+      font-family: sans-serif;
+      padding: 2em;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    input, button {
+      font-size: 1.2em;
+      padding: 0.5em 1em;
+      margin: 0.5em;
+      border-radius: 8px;
+      border: none;
+    }
+    input {
+      width: 120px;
+    }
+    button {
+      background: #0f62fe;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0353e9;
+    }
+    .message {
+      margin-top: 1em;
+      font-size: 1.1em;
+      color: #f5c400;
+    }
+    img {
+      margin-top: 1em;
+      max-width: 90%;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.2);
+    }
+  </style>
 </head>
 <body>
   <input type="number" id="count" min="1" placeholder="How many tabs?" />
   <button onclick="openLagTabs()">Open Lag Tabs</button>
+  <div class="message">If it is opening only one tab, Allow Popups in the top right!</div>
+  <img src="https://files.catbox.moe/ar007s.png" alt="Popup Help Image">
 
 <script>
   const lagIframeHTML = `
@@ -64,10 +78,7 @@
 
   function openLagTabs() {
     const count = parseInt(document.getElementById('count').value);
-    if (isNaN(count) || count < 1) {
-      alert('Enter a valid number (1 or more)');
-      return;
-    }
+    if (isNaN(count) || count < 1) return;
 
     for (let i = 0; i < count; i++) {
       const newTab = window.open('about:blank', '_blank');
@@ -76,8 +87,7 @@
         newTab.document.write(lagIframeHTML);
         newTab.document.close();
       } else {
-        alert('Popup blocked! Please allow popups.');
-        break;
+        break; // Don't keep trying if popups are blocked
       }
     }
   }
