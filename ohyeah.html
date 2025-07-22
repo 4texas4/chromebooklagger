@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Open Lag Tabs in about:blank</title>
+<style>
+  body {
+    background: #111;
+    color: white;
+    font-family: sans-serif;
+    padding: 2em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  input, button {
+    font-size: 1.2em;
+    padding: 0.5em 1em;
+    margin: 0.5em;
+    border-radius: 8px;
+    border: none;
+  }
+  input {
+    width: 120px;
+  }
+  button {
+    background: #0f62fe;
+    color: white;
+    cursor: pointer;
+  }
+  button:hover {
+    background: #0353e9;
+  }
+</style>
+</head>
+<body>
+  <input type="number" id="count" min="1" placeholder="How many tabs?" />
+  <button onclick="openLagTabs()">Open Lag Tabs</button>
+
+<script>
+  const lagIframeHTML = `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <title>Lag Iframe Tab</title>
+      <style>
+        html, body {
+          margin: 0; padding: 0; height: 100%; overflow: hidden; background: #000;
+        }
+        iframe {
+          border: none;
+          width: 100vw;
+          height: 100vh;
+          display: block;
+        }
+      </style>
+    </head>
+    <body>
+      <iframe src="https://4texas4.github.io/chromebooklagger/lag.html" allowfullscreen></iframe>
+    </body>
+    </html>
+  `;
+
+  function openLagTabs() {
+    const count = parseInt(document.getElementById('count').value);
+    if (isNaN(count) || count < 1) {
+      alert('Enter a valid number (1 or more)');
+      return;
+    }
+
+    for (let i = 0; i < count; i++) {
+      const newTab = window.open('about:blank', '_blank');
+      if (newTab) {
+        newTab.document.open();
+        newTab.document.write(lagIframeHTML);
+        newTab.document.close();
+      } else {
+        alert('Popup blocked! Please allow popups.');
+        break;
+      }
+    }
+  }
+</script>
+</body>
+</html>
