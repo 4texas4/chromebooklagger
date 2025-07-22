@@ -4,108 +4,148 @@
   <meta charset="UTF-8" />
   <title>Open Lag Tabs in about:blank</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
     body {
+      margin: 0;
       background: #111;
       color: white;
       font-family: sans-serif;
-      padding: 2em;
+      height: 100vh;
       display: flex;
       flex-direction: column;
+      justify-content: center;
       align-items: center;
+    }
+
+    .center-ui {
+      text-align: center;
+      z-index: 1;
+    }
+
+    input {
+      font-size: 1.5em;
+      padding: 0.8em 1em;
+      margin: 0.5em;
+      border-radius: 12px;
+      border: none;
+      width: 250px;
       text-align: center;
     }
-    input, button {
-      font-size: 1.2em;
-      padding: 0.5em 1em;
-      margin: 0.5em;
-      border-radius: 8px;
-      border: none;
-    }
-    input {
-      width: 120px;
-    }
+
     button {
+      font-size: 1.5em;
+      padding: 1em 3em;
+      margin: 0.5em;
+      border-radius: 12px;
+      border: none;
       background: #0f62fe;
       color: white;
       cursor: pointer;
+      width: 250px;
     }
+
     button:hover {
       background: #0353e9;
     }
-    .message {
-      margin-top: 1em;
-      font-size: 1.1em;
+
+    .bottom-left {
+      position: fixed;
+      bottom: 1em;
+      left: 1em;
+      max-width: 300px;
+      text-align: left;
+    }
+
+    .bottom-left .message {
+      margin-bottom: 0.5em;
       color: #f5c400;
+      font-size: 0.95em;
+      font-weight: bold;
     }
-    img {
-      margin-top: 1em;
-      max-width: 90%;
+
+    .bottom-left img {
+      width: 100%;
       border-radius: 12px;
-      box-shadow: 0 0 20px rgba(255,255,255,0.2);
+      box-shadow: 0 0 15px rgba(255,255,255,0.1);
     }
+
     .credits {
-      margin-top: 2em;
-      font-size: 0.9em;
+      position: fixed;
+      bottom: 1em;
+      right: 1em;
+      font-size: 0.8em;
       color: #888;
+      z-index: 2;
     }
+
     .credits a {
       color: #888;
       text-decoration: none;
     }
+
     .credits a:hover {
       text-decoration: underline;
     }
   </style>
 </head>
 <body>
-  <input type="number" id="count" min="1" placeholder="How many tabs?" />
-  <button onclick="openLagTabs()">Open Lag Tabs</button>
-  <div class="message">If it is opening only one tab, Allow Popups in the top right!</div>
-  <img src="https://files.catbox.moe/ar007s.png" alt="Popup Help Image">
-  <div class="credits">
-    Credits to <a href="https://cznull.github.io/vsbm" target="_blank">https://cznull.github.io/vsbm</a>
+  <div class="center-ui">
+    <input type="number" id="count" min="1" placeholder="How many tabs?" />
+    <br>
+    <button onclick="openLagTabs()">Open Lag Tabs</button>
   </div>
 
-<script>
-  const lagIframeHTML = `
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8" />
-      <title>Lag Iframe Tab</title>
-      <style>
-        html, body {
-          margin: 0; padding: 0; height: 100%; overflow: hidden; background: #000;
-        }
-        iframe {
-          border: none;
-          width: 100vw;
-          height: 100vh;
-          display: block;
-        }
-      </style>
-    </head>
-    <body>
-      <iframe src="https://4texas4.github.io/chromebooklagger/lag.html" allowfullscreen></iframe>
-    </body>
-    </html>
-  `;
+  <div class="bottom-left">
+    <div class="message">If it is opening only one tab, Allow Popups in the top right!</div>
+    <img src="https://files.catbox.moe/ar007s.png" alt="Popup Help">
+  </div>
 
-  function openLagTabs() {
-    const count = parseInt(document.getElementById('count').value);
-    if (isNaN(count) || count < 1) return;
+  <div class="credits">
+    Credits to <a href="https://cznull.github.io/vsbm" target="_blank">cznull.github.io/vsbm</a>
+  </div>
 
-    for (let i = 0; i < count; i++) {
-      const newTab = window.open('about:blank', '_blank');
-      if (newTab) {
-        newTab.document.open();
-        newTab.document.write(lagIframeHTML);
-        newTab.document.close();
-      } else {
-        break;
+  <script>
+    const lagIframeHTML = `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <title>Lag Iframe Tab</title>
+        <style>
+          html, body {
+            margin: 0; padding: 0; height: 100%; overflow: hidden; background: #000;
+          }
+          iframe {
+            border: none;
+            width: 100vw;
+            height: 100vh;
+            display: block;
+          }
+        </style>
+      </head>
+      <body>
+        <iframe src="https://4texas4.github.io/chromebooklagger/lag.html" allowfullscreen></iframe>
+      </body>
+      </html>
+    `;
+
+    function openLagTabs() {
+      const count = parseInt(document.getElementById('count').value);
+      if (isNaN(count) || count < 1) return;
+
+      for (let i = 0; i < count; i++) {
+        const newTab = window.open('about:blank', '_blank');
+        if (newTab) {
+          newTab.document.open();
+          newTab.document.write(lagIframeHTML);
+          newTab.document.close();
+        } else {
+          break;
+        }
       }
     }
-  }
-</script>
+  </script>
 </body>
 </html>
