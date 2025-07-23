@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>8 Lag Iframes</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #000;
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+    }
+
+    .frame-container {
+      position: fixed;
+      width: 25vw;  /* 4 columns */
+      height: 50vh; /* 2 rows */
+      overflow: hidden;
+    }
+
+    iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 3000px;
+      height: 3000px;
+      transform: scale(0.083); /* To fit iframe into 25vw x 50vh */
+      transform-origin: top left;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    const src = "https://4texas4.github.io/chromebooklagger/lag.html";
+
+    const cols = 4;
+    const rows = 2;
+    let count = 0;
+
+    for (let row = 0; row < rows; row++) {
+      for (let col = 0; col < cols; col++) {
+        if (count++ >= 8) break;
+
+        const container = document.createElement("div");
+        container.className = "frame-container";
+        container.style.left = `${25 * col}vw`;
+        container.style.top = `${50 * row}vh`;
+
+        const iframe = document.createElement("iframe");
+        iframe.src = src;
+        iframe.loading = "eager";
+
+        container.appendChild(iframe);
+        document.body.appendChild(container);
+      }
+    }
+  </script>
+</body>
+</html>
